@@ -13,6 +13,11 @@ KEY_PRICE = '2. price'
 KEY_VOLUME = '3. volume'
 KEY_TIMESTAMP = '4. timestamp'
 
+def chunks(l, n):
+    """Yield successive n-sized chunks from l."""
+    for i in range(0, len(l), n):
+        yield l[i:i + n]
+
 class ApiLock(object):
 
     def __init__(self):
@@ -36,12 +41,6 @@ class ApiLock(object):
         self.release()
 
 api_lock = ApiLock()
-
-def chunks(l, n):
-    """Yield successive n-sized chunks from l."""
-    for i in range(0, len(l), n):
-        yield l[i:i + n]
-
 
 def get_current_prices(stocks):
     ret = []
