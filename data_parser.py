@@ -5,15 +5,22 @@ import time
 
 class DataPoint:
     __slots__ = ['minutes', 'open', 'high', 'low', 'close', 'volume']
-    def __init__(self, date, timestamp, open_, high, low, close, volume):
 
-        self.minutes = int((time.mktime(date.timetuple()) + timestamp.total_seconds()) / 60)
+    def __init__(self, open_, high, low, close, volume, minutes=None, date=None, timestamp=None):
+
+        if minutes is None:
+            self.minutes = int((time.mktime(date.timetuple()) + timestamp.total_seconds()) / 60)
+        else:
+            self.minutes = minutes
         self.open = open_
         self.high = high
         self.low = low
         self.close = close
-        self.volume= volume
+        self.volume = volume
 
+    def to_csv_line(self):
+        args = [str(self.minutes), str(self.open), str(self.high), str(self.low), str(self.close), str(self.volume)]
+        return ','.join(args)
 
 
 def default_data_point():
@@ -25,52 +32,25 @@ def default_data_point():
                      1.0,
                      1.0,)
 
-def line_to_data_point(line):
-    args = []
-    data_points = line.split(',')
-    try:
-        args.append(datetime.datetime.strptime(data_points[0], '%Y%m%d').date())
-    except:
-        args.append(datetime.datetime.strptime(data_points[0], '%m/%d/%Y').date())
+def find_data(data_points):
+    minutes = data_points[0].minutes
+    high = 0.0
+    low = 9999999999999.0
+    volume = 0
+    open_ = data_points[0].open
+    close = data_points[-1].close
+    for dp in data_points:
+        if dp.high > high:
+            high = dp.high
+        if dp.low < low:
+            low = dp.low
+        volume += dp.volume
+    return DataPoint(0, 0, open_, high, low, close, volume, minutes)
 
-    t = data_points[1]
-    if len(t) == 1:
-        td = datetime.timedelta(seconds=0)
-    elif len(t) == 4:
-        td = datetime.timedelta(hours=int(t[0:2]), minutes=int(t[2:4]))
-    elif len(t) == 5:
-        td = datetime.timedelta(hours=int(t[0:2]), minutes=int(t[3:5]))
-    args.append(td)
+def gen_new_intraday(data_points, num_minutes):
+    ret = []
+    all_periods = zip(*[iter(data_points)]*num_minutes)
+    for chunk in all_periods:
+        ret.append(find_data(chunk))
+    return ret
 
-    args.append(float(data_points[2])) #open
-    args.append(float(data_points[3])) #high
-    args.append(float(data_points[4])) #low
-    args.append(float(data_points[5])) #close
-    args.append(float(data_points[6])) #volume
-
-    return DataPoint(*args)
-
-
-def parse_csv(path):
-    if path.endswith('.xz'):
-        import lzma
-        open = lzma.open
-    else:
-        import builtins
-        open = builtins.open
-    with open(path,'rt') as f:
-        for line in f:
-            line = line.strip()
-            dp = line_to_data_point(line)
-            yield dp
-
-import pprint
-
-import time
-start = time.time()
-#data = list(parse_csv('data/daily/table_qcom.csv'))
-#data = list(parse_csv('data/minute/ibm.csv'))
-#end = time.time()
-#print('took {} ms to parse xz'.format((end-start)*1000))
-
-pprint.pprint(list(parse_csv('data/daily/table_qcom.csv.xz')))
