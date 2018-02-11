@@ -18,7 +18,10 @@ def default_data_point():
 def line_to_data_point(line):
     args = []
     data_points = line.split(',')
-    args.append(datetime.datetime.strptime(data_points[0], '%Y%m%d').date())
+    try:
+        args.append(datetime.datetime.strptime(data_points[0], '%Y%m%d').date())
+    except:
+        args.append(datetime.datetime.strptime(data_points[0], '%m/%d/%Y').date())
     args.append(int(data_points[1])) # time
     args.append(float(data_points[2])) #open
     args.append(float(data_points[3])) #high
