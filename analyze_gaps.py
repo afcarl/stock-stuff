@@ -18,7 +18,6 @@ def detect_closed_gaps_in_range(data_points, periods):
         for num_periods,test_dp in enumerate(data_points[index+1:index+1+periods]):
             if within_error_margin(dp.close,test_dp.low,test_dp.high):
                 gaps -= 1
-                #the open and close are so close that there's no point in trying to analyze
                 break
 
             if test_dp.high >= dp.close >= test_dp.low:
