@@ -3,7 +3,7 @@ from alpha_vantage.techindicators import TechIndicators
 
 from pprint import pprint
 from s_p_companies import s_p_companies
-from utils import *
+from Utils import *
 import threading
 import time
 

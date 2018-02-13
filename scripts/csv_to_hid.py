@@ -4,11 +4,11 @@ parentdir = os.path.dirname(currentdir)
 sys.path.insert(0,parentdir)
 
 import argparse
-from csv_file import CSVFile
-from HID.hid_file import HIDFile
+from Utils.FileHandling.CSV.csv_file import CSVFile
+from Utils.FileHandling.HID import HIDFile
 def main():
-    parser = argparse.ArgumentParser(description="convert csv file to hid file")
-    parser.add_argument('input', type=str, help="path to input csv file")
+    parser = argparse.ArgumentParser(description="convert CSV file to hid file")
+    parser.add_argument('input', type=str, help="path to input CSV file")
     parser.add_argument('output', type=str, help="path to output hid file")
     args = parser.parse_args()
 

@@ -1,7 +1,7 @@
 import time
 import datetime
 import struct
-from HID import HIDType
+from Utils.FileHandling.HID import HIDType
 
 class DataPoint:
     __slots__ = ['minutes', 'open', 'high', 'low', 'close', 'volume']

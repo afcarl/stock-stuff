@@ -23,9 +23,7 @@ def find_data(data_points):
     return DataPoint(0, 0, open_, high, low, close, volume, minutes)
 
 def gen_new_intraday(data_points, num_minutes):
-    ret = []
     all_periods = zip(*[iter(data_points)]*num_minutes)
     for chunk in all_periods:
-        ret.append(find_data(chunk))
-    return ret
+        yield find_data(chunk)
 

@@ -1,18 +1,13 @@
-from enum import Enum
 import struct
-import lzma
-import gzip
-import builtins
-import os
 
-from utils import *
+from Utils import *
 from DataPoint import DataPoint
-from HID import HIDType
+from Utils.FileHandling.HID import HIDType
 
 
 class HIDFile:
 
-    def __init__(self, path, permissions, hid_type=HIDType.FLOAT32):
+    def __init__(self, path, permissions='rb', hid_type=HIDType.FLOAT32):
         self.path = path
         self.permissions = permissions
         self.fp = None
