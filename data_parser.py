@@ -3,18 +3,9 @@ import datetime
 import os
 import time
 import struct
-
+from DataPoint import DataPoint
 from enum import Enum
 
-
-def default_data_point():
-    return DataPoint(datetime.datetime.strptime('19690101', '%Y%m%d').date(),
-                     datetime.timedelta(seconds=0),
-                     1.0,
-                     1.0,
-                     1.0,
-                     1.0,
-                     1.0,)
 
 def find_data(data_points):
     minutes = data_points[0].minutes

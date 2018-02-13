@@ -3,6 +3,7 @@ from alpha_vantage.techindicators import TechIndicators
 
 from pprint import pprint
 from s_p_companies import s_p_companies
+from utils import *
 import threading
 import time
 
@@ -13,10 +14,6 @@ KEY_PRICE = '2. price'
 KEY_VOLUME = '3. volume'
 KEY_TIMESTAMP = '4. timestamp'
 
-def chunks(l, n):
-    """Yield successive n-sized chunks from l."""
-    for i in range(0, len(l), n):
-        yield l[i:i + n]
 
 class ApiLock(object):
 
@@ -63,5 +60,3 @@ def get_rsi(stock, interval='daily', time_period=14, series_type='close'):
     with api_lock:
         data, metadata = ti.get_rsi(stock, interval=interval, time_period=time_period, series_type=series_type)
     pprint(data)
-
-get_rsi('GOOGL', interval='1min', time_period=14)

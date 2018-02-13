@@ -1,7 +1,7 @@
 import time
 import datetime
 import struct
-from hid_file import HIDType
+from HID import HIDType
 
 class DataPoint:
     __slots__ = ['minutes', 'open', 'high', 'low', 'close', 'volume']
@@ -61,3 +61,13 @@ class DataPoint:
     def unpack(self, packed, hid_type):
         format_str = HIDType.get_entry_format_str(hid_type)
         self.minutes, self.volume, self.open, self.high, self.low, self.close = struct.unpack(format_str, packed)
+
+    @staticmethod
+    def default_data_point(self):
+        return DataPoint(datetime.datetime.strptime('19690101', '%Y%m%d').date(),
+                         datetime.timedelta(seconds=0),
+                         1.0,
+                         1.0,
+                         1.0,
+                         1.0,
+                         1.0, )

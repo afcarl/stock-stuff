@@ -27,10 +27,7 @@ class CSVFile:
 
     def read_datapoints(self):
         for line in self.fp:
-            print(line)
-            line = line.strip()
-            dp = line_to_data_point(line)
-            yield dp
+            yield DataPoint(csv_line=line)
 
     def write_datapoints(self, data_points):
         #there's a very real possibility that we're reading from and writing to the same file
@@ -39,9 +36,3 @@ class CSVFile:
         self.fp.seek(0)
         for dp in data_points:
             self.fp.write(dp.to_csv_line() + '\n')
-
-with CSVFile('data/daily/table_qcom.csv','rt') as f:
-    data = list(f.read_datapoints())
-
-with CSVFile('data/daily/table_qcom.csv', 'w') as f:
-    f.write_datapoints(data)
