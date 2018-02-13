@@ -2,25 +2,9 @@ from collections import namedtuple
 import datetime
 import os
 import time
+import struct
 
-class DataPoint:
-    __slots__ = ['minutes', 'open', 'high', 'low', 'close', 'volume']
-
-    def __init__(self, open_, high, low, close, volume, minutes=None, date=None, timestamp=None):
-
-        if minutes is None:
-            self.minutes = int((time.mktime(date.timetuple()) + timestamp.total_seconds()) / 60)
-        else:
-            self.minutes = minutes
-        self.open = open_
-        self.high = high
-        self.low = low
-        self.close = close
-        self.volume = volume
-
-    def to_csv_line(self):
-        args = [str(self.minutes), str(self.open), str(self.high), str(self.low), str(self.close), str(self.volume)]
-        return ','.join(args)
+from enum import Enum
 
 
 def default_data_point():

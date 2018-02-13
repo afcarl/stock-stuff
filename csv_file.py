@@ -2,36 +2,6 @@ import datetime
 import lzma
 from data_parser import DataPoint
 
-def line_to_data_point(line):
-    kwargs = dict()
-    data_points = str(line).split(',')
-    if len(data_points) == 6:
-        # time and date have been combined to the first field to mean "minutes since epoch"
-        kwargs['minutes'] = int(data_points.pop(0))
-    elif len(data_points) == 7:
-        date = data_points.pop(0)
-        try:
-            kwargs['date'] = datetime.datetime.strptime(date, '%Y%m%d').date()
-        except:
-            kwargs['date'] = datetime.datetime.strptime(date, '%m/%d/%Y').date()
-
-        t = data_points.pop(0)
-        if len(t) == 4:
-            td = datetime.timedelta(hours=int(t[0:2]), minutes=int(t[2:4]))
-        if len(t) == 5:
-            td = datetime.timedelta(hours=int(t[0:2]), minutes=int(t[3:5]))
-        else:
-            td = datetime.timedelta(seconds=0)
-        kwargs['timestamp'] = td
-
-    kwargs['open_'] = float(data_points.pop(0))
-    kwargs['high'] = float(data_points.pop(0))
-    kwargs['low'] = float(data_points.pop(0))
-    kwargs['close'] = float(data_points.pop(0))
-    kwargs['volume'] = int(float(data_points.pop(0)))
-
-    return DataPoint(**kwargs)
-
 class CSVFile:
 
     def __init__(self, path, permissions='rt'):
