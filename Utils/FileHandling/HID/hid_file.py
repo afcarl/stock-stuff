@@ -32,9 +32,6 @@ class HIDFile:
         self.fp.close()
 
     def write_datapoints(self, data_points, hid_type):
-        #there's a very real possibility that we're reading from and writing to the same file
-        #so we need to copy the entire data_points and then seek back to the beginning
-        data_points = list(data_points)
         self.length = len(data_points)
         self.fp.seek(0)
         self.fp.write(self.pack_header())
@@ -49,11 +46,12 @@ class HIDFile:
     def read_datapoints(self):
         self.fp.seek(0)
         self.unpack_header(self.fp.read(64))
+        data_size = 32 if self.hid_type == HIDType.FLOAT32 else 64
         while True:
             data = self.fp.read(65536)
             if not data:
                 break
-            for bytes_str in chunks(data,32):
+            for bytes_str in chunks(data, data_size):
                 yield DataPoint(packed=bytes_str)
 
     def unpack_header(self, bytes_str):
@@ -62,5 +60,5 @@ class HIDFile:
 
     def pack_header(self):
         dt = HIDType.encode_hid_type(self.hid_type)
-        bytes_str = struct.pack(HIDType.get_header_format_str(),b'd',b'i',b'h',b'.', self.version, self.length, dt)
+        bytes_str = struct.pack(HIDType.get_header_format_str(), b'd', b'i', b'h', b'.', self.version, self.length, dt)
         return bytes_str

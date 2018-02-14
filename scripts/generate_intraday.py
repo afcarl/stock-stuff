@@ -1,3 +1,8 @@
+import os,sys,inspect
+currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+parentdir = os.path.dirname(currentdir)
+sys.path.insert(0,parentdir)
+
 import argparse
 from Utils.FileHandling import *
 from data_parser import gen_new_intraday
@@ -10,4 +15,7 @@ def main():
     args = parser.parse_args()
 
     with DataFile(args.input, 'r') as input, DataFile(args.output, 'w') as output:
-        output.write_datapoints(gen_new_intraday(input.read_datapoints()),args.minutes)
+        output.write_datapoints(gen_new_intraday(input.read_datapoints(), args.minutes))
+
+if __name__ == '__main__':
+    main()

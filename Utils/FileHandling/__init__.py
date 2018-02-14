@@ -2,8 +2,8 @@ import os
 from Utils.FileHandling.CSV.csv_file import CSVFile
 from Utils.FileHandling.HID.hid_file import HIDFile
 
-class DataFile:
 
+class DataFile:
     def __init__(self, path, permissions):
         file_type = ''
         path_parts = os.path.basename(path).split('.')

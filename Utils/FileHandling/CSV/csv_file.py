@@ -26,13 +26,19 @@ class CSVFile:
         self.fp.close()
 
     def read_datapoints(self):
-        for line in self.fp:
-            yield DataPoint(csv_line=line)
+        while True:
+            lines = self.fp.readlines(65536)
+            if not lines:
+                break
+            for line in lines:
+                yield DataPoint(csv_line=line)
 
     def write_datapoints(self, data_points):
-        #there's a very real possibility that we're reading from and writing to the same file
-        #so we need to copy the entire data_points and then seek back to the beginning
-        data_points = list(data_points)
         self.fp.seek(0)
+        out_str = ''
         for dp in data_points:
-            self.fp.write(dp.to_csv_line() + '\n')
+            out_str += dp.to_csv_line() + '\n'
+            if len(out_str) >= 65536:
+                self.fp.write(out_str)
+                out_str = ''
+        self.fp.write(out_str)

@@ -3,6 +3,7 @@ import datetime
 import struct
 from Utils.FileHandling.HID import HIDType
 
+
 class DataPoint:
     __slots__ = ['minutes', 'open', 'high', 'low', 'close', 'volume']
 
@@ -42,7 +43,7 @@ class DataPoint:
             t = data_points.pop(0)
             if len(t) == 4:
                 td = datetime.timedelta(hours=int(t[0:2]), minutes=int(t[2:4]))
-            if len(t) == 5:
+            elif len(t) == 5:
                 td = datetime.timedelta(hours=int(t[0:2]), minutes=int(t[3:5]))
             else:
                 td = datetime.timedelta(seconds=0)

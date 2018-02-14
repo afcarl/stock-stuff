@@ -5,7 +5,7 @@ sys.path.insert(0,parentdir)
 
 import argparse
 from Utils.FileHandling.CSV.csv_file import CSVFile
-from Utils.FileHandling.HID import HIDFile
+from Utils.FileHandling.HID.hid_file import HIDFile
 def main():
     parser = argparse.ArgumentParser(description="convert CSV file to hid file")
     parser.add_argument('input', type=str, help="path to input CSV file")

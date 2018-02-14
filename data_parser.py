@@ -1,10 +1,4 @@
-from collections import namedtuple
-import datetime
-import os
-import time
-import struct
 from DataPoint import DataPoint
-from enum import Enum
 
 
 def find_data(data_points):
@@ -20,7 +14,7 @@ def find_data(data_points):
         if dp.low < low:
             low = dp.low
         volume += dp.volume
-    return DataPoint(0, 0, open_, high, low, close, volume, minutes)
+    return DataPoint(open_=open_, high=high, low=low, close=close, volume=volume, minutes=minutes)
 
 def gen_new_intraday(data_points, num_minutes):
     all_periods = zip(*[iter(data_points)]*num_minutes)
