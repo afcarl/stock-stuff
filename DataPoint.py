@@ -3,6 +3,11 @@ import datetime
 import struct
 from Utils.FileHandling.HID import HIDType
 
+def date_timestamp_to_seconds(date, timestamp):
+    return int((time.mktime(date.timetuple()) + timestamp.total_seconds()))
+
+def date_timestamp_to_minutes(date, timestamp):
+    return date_timestamp_to_seconds(date,timestamp) / 60
 
 class DataPoint:
     __slots__ = ['minutes', 'open', 'high', 'low', 'close', 'volume']
@@ -15,7 +20,7 @@ class DataPoint:
             self.from_csv_line(csv_line)
         else:
             if minutes is None:
-                self.minutes = int((time.mktime(date.timetuple()) + timestamp.total_seconds()) / 60)
+                self.minutes = date_timestamp_to_minutes(date,timestamp)
             else:
                 self.minutes = minutes
             self.open = open_
