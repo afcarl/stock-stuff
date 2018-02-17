@@ -1,6 +1,7 @@
 import time
 import datetime
 import struct
+import numpy
 from Utils.FileHandling.HID import HIDType
 
 def date_timestamp_to_seconds(date, timestamp):
@@ -68,6 +69,12 @@ class DataPoint:
         format_str = HIDType.get_entry_format_str(hid_type)
         self.minutes, self.volume, self.open, self.high, self.low, self.close = struct.unpack(format_str, packed)
 
+    def __str__(self):
+        return "minutes: {} open: {:.3f} high: {:.3f} low: {:.3f} close: {:.3f} volume:{}".format(self.minutes,self.open,self.high,self.low,self.close,self.volume)
+
+    def __repr__(self):
+        return self.__str__()
+
     @staticmethod
     def default_data_point(self):
         return DataPoint(datetime.datetime.strptime('19690101', '%Y%m%d').date(),
@@ -77,3 +84,19 @@ class DataPoint:
                          1.0,
                          1.0,
                          1.0, )
+
+    @staticmethod
+    def interpolate_datapoint(dp1, dp2):
+        minutes = range(dp1.minutes+1, dp2.minutes)
+        opens = numpy.interp(minutes,[dp1.minutes,dp2.minutes], [dp1.open,dp2.open])
+        highs = numpy.interp(minutes,[dp1.minutes,dp2.minutes], [dp1.high,dp2.high])
+        lows = numpy.interp(minutes,[dp1.minutes,dp2.minutes], [dp1.low,dp2.low])
+        closes = numpy.interp(minutes,[dp1.minutes,dp2.minutes], [dp1.close,dp2.close])
+        volumes = numpy.interp(minutes,[dp1.minutes,dp2.minutes], [dp1.volume,dp2.volume])
+        volumes = list(map(int,volumes))
+        ret = []
+        for i in range(0,len(minutes)):
+            dp =DataPoint(minutes=minutes[i],open_=opens[i],high=highs[i],low=lows[i],close=closes[i],volume=volumes[i])
+            ret.append(dp)
+
+        return ret

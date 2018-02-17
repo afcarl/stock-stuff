@@ -7,7 +7,7 @@ from Utils.FileHandling.HID import HIDType
 
 class HIDFile:
 
-    def __init__(self, path, permissions='rb', hid_type=HIDType.FLOAT32):
+    def __init__(self, path, permissions='rb', hid_type=HIDType.FLOAT32, *args, **kwargs):
         self.path = path
         self.permissions = permissions
         self.fp = None
@@ -32,6 +32,8 @@ class HIDFile:
         self.fp.close()
 
     def write_datapoints(self, data_points, hid_type):
+        if not isinstance(data_points, list):
+            data_points = list(data_points)
         self.length = len(data_points)
         self.fp.seek(0)
         self.fp.write(self.pack_header())
@@ -52,7 +54,7 @@ class HIDFile:
             if not data:
                 break
             for bytes_str in chunks(data, data_size):
-                yield DataPoint(packed=bytes_str)
+                yield DataPoint(packed=bytes_str, hid_type=self.hid_type)
 
     def unpack_header(self, bytes_str):
         _, _, _, _, self.version, self.length, t = struct.unpack(HIDType.get_header_format_str(), bytes_str)

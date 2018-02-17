@@ -4,7 +4,7 @@ from Utils.FileHandling.HID.hid_file import HIDFile
 
 
 class DataFile:
-    def __init__(self, path, permissions):
+    def __init__(self, path, permissions, *args, **kwargs):
         file_type = ''
         path_parts = os.path.basename(path).split('.')
         index = -1
@@ -13,11 +13,11 @@ class DataFile:
         if path_parts[index] == 'csv':
             if 't' not in permissions:
                 permissions += 't'
-            self.underlying = CSVFile(path, permissions)
-        elif path_parts[index] == 'csv':
+            self.underlying = CSVFile(path, permissions, *args, **kwargs)
+        elif path_parts[index] == 'hid':
             if 'b' not in permissions:
                 permissions += 'b'
-            self.underlying = HIDFile(path, permissions)
+            self.underlying = HIDFile(path, permissions, *args, **kwargs)
 
     def __enter__(self):
         return self.underlying.__enter__()

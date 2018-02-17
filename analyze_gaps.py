@@ -1,6 +1,5 @@
-import data_parser
-import os
-from pprint import pprint
+
+from Utils.FileHandling.HID.hid_file import HIDFile
 
 def within_error_margin(close, low, high, error_margin=.01):
     percent_diff_low = abs((low - close) / close)
@@ -15,12 +14,14 @@ def detect_closed_gaps_in_range(data_points, periods):
     num_periods_to_close = 0
     for index, dp in enumerate(data_points):
         gaps += 1
+
         for num_periods,test_dp in enumerate(data_points[index+1:index+1+periods]):
             if within_error_margin(dp.close,test_dp.low,test_dp.high):
                 gaps -= 1
                 break
 
             if test_dp.high >= dp.close >= test_dp.low:
+                print("open {:2.2f} high {:2.2f} low {:2.2f} close {:2.2f}".format(dp.open, dp.high, dp.low, dp.close, ))
                 closed += 1
                 num_periods_to_close += num_periods+1
                 break
@@ -36,8 +37,7 @@ def detect_closed_gaps_in_range(data_points, periods):
 def detect_gaps_from_previous(data_points):
     return detect_closed_gaps_in_range(data_points, 1)
 
-for csv in os.listdir('data/daily/'):
-    print(csv)
-    parsed = data_parser.parse_csv('data/daily/' + csv)
-    detect_gaps_from_previous(parsed)
-    #detect_closed_gaps_in_range(parsed,1)
+with HIDFile('data/daily/SPXL1d.hid') as f:
+
+    detect_gaps_from_previous(f.read_datapoints())
+#detect_closed_gaps_in_range(parsed,1)

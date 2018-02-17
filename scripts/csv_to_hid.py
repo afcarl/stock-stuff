@@ -3,17 +3,31 @@ currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentfram
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0,parentdir)
 
+from multiprocessing import Pool
+
 import argparse
 from Utils.FileHandling.CSV.csv_file import CSVFile
 from Utils.FileHandling.HID.hid_file import HIDFile
-def main():
-    parser = argparse.ArgumentParser(description="convert CSV file to hid file")
-    parser.add_argument('input', type=str, help="path to input CSV file")
-    parser.add_argument('output', type=str, help="path to output hid file")
-    args = parser.parse_args()
+def main(csvs):
+    for f in csvs:
+        if not f.endswith('csv'):
+            continue
+        input_path = '../data/minute/' + f
+        output_path = '../data/minute/' + f.replace('csv','hid')
+        start = time.time()
+        with CSVFile(input_path, 'rt') as input_csv, HIDFile(output_path, 'wb') as output_hid:
+            output_hid.write_datapoints(input_csv.read_datapoints(), output_hid.hid_type)
+        end = time.time()
+        print("took",(end-start),'seconds to convert',f)
 
-    with CSVFile(args.input,'rt') as input_csv, HIDFile(args.output,'wb') as output_hid:
-        output_hid.write_datapoints(input_csv.read_datapoints(),output_hid.hid_type)
+def split(a, n):
+    k, m = divmod(len(a), n)
+    return (a[i * k + min(i, m):(i + 1) * k + min(i + 1, m)] for i in range(n))
 
+import time
 if __name__ == '__main__':
-    main()
+    csv_sets = split(sorted(os.listdir('../data/minute')),4)
+    pool = Pool(processes=4)
+    print(pool.map(main, csv_sets))
+
+

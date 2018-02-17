@@ -1,10 +1,9 @@
-import datetime
-import lzma
-from data_parser import DataPoint
+
+from DataPoint import DataPoint
 
 class CSVFile:
 
-    def __init__(self, path, permissions='rt'):
+    def __init__(self, path, permissions='rt+', *args, **kwargs):
         self.path = path
         self.permissions = permissions
         self.fp = None
@@ -20,6 +19,10 @@ class CSVFile:
             import builtins
             open = builtins.open
         self.fp = open(self.path, self.permissions)
+
+        line = self.fp.readline()
+        if not line.startswith('"Date"'):
+            self.fp.seek(0)
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
