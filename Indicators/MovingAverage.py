@@ -19,14 +19,3 @@ class MovingAverage(Indicator):
         period = len(points)
         closes = [p.close for p in points]
         return sum(closes) / float(period)
-
-with HIDFile('../data/1minute', 'r+b') as f:
-    data_points = list(f.read_datapoints())[-1000:]
-    ma = RSI(data_points, 14)
-    x_axis = []
-    y_axis = []
-    for minutes, point in ma.calculate():
-        x_axis.append(minutes)
-        y_axis.append(point)
-    plt.plot(x_axis[-10:], y_axis[-10:])
-    plt.show()
