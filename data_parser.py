@@ -58,8 +58,7 @@ def count_missing(data_points):
             pass
         elif dp.minutes - prev_dp.minutes:
             num_minutes_missing += dp.minutes - prev_dp.minutes - 1
-        if num_minutes + num_minutes_missing > 100000:
-            break
+
         prev_dp = dp
     print("num minutes missing", num_minutes_missing)
     print("num minutes", num_minutes)

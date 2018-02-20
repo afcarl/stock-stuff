@@ -1,8 +1,10 @@
 import matplotlib.pyplot as plt
+import numpy
 
 from Indicators import *
+from Utils.FileHandling.HID.hid_file import HIDFile
 
-class MovingAverage(Indicator):
+class BollingerBand(Indicator):
 
     def __init__(self, data_points, period):
         assert isinstance(data_points, list), "moving average must take a list, not an iterator"
@@ -18,15 +20,10 @@ class MovingAverage(Indicator):
         points = self.data_points[low: index]
         period = len(points)
         closes = [p.close for p in points]
-        return sum(closes) / float(period)
+        average = sum(closes) / float(period)
+        std_deviation = numpy.std([x.close for x in points])
 
-with HIDFile('../data/1minute', 'r+b') as f:
-    data_points = list(f.read_datapoints())[-1000:]
-    ma = RSI(data_points, 14)
-    x_axis = []
-    y_axis = []
-    for minutes, point in ma.calculate():
-        x_axis.append(minutes)
-        y_axis.append(point)
-    plt.plot(x_axis[-10:], y_axis[-10:])
-    plt.show()
+        high = average + std_deviation * 2
+        low = average - (std_deviation * 2)
+        return low, average, high
+
