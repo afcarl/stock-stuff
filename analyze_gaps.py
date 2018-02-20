@@ -37,7 +37,3 @@ def detect_closed_gaps_in_range(data_points, periods):
 def detect_gaps_from_previous(data_points):
     return detect_closed_gaps_in_range(data_points, 1)
 
-with HIDFile('data/daily/SPXL1d.hid') as f:
-
-    detect_gaps_from_previous(f.read_datapoints())
-#detect_closed_gaps_in_range(parsed,1)

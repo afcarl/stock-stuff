@@ -16,13 +16,17 @@ class CSVFile:
             import gzip
             open = gzip.open
         else:
+
             import builtins
             open = builtins.open
         self.fp = open(self.path, self.permissions)
 
-        line = self.fp.readline()
-        if not line.startswith('"Date"'):
-            self.fp.seek(0)
+        try:
+            line = self.fp.readline()
+            if not line.startswith('"Date"'):
+                self.fp.seek(0)
+        except:
+            pass
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):

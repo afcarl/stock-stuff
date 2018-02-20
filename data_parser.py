@@ -43,6 +43,26 @@ def clean_minute_data(data_points):
     print("num minutes",num_minutes)
     return ret_data_points
 
-with CSVFile('data/1minute/A.csv', 'rt') as f:
-    clean = clean_minute_data(f.read_datapoints())
-    clean_minute_data(clean)
+
+
+def count_missing(data_points):
+    data_points_iterator = iter(data_points)
+    num_minutes_missing = 0
+    num_minutes = 0
+    prev_dp = next(data_points_iterator)
+    for dp in data_points_iterator:
+        if dp.minutes - prev_dp.minutes == 1:
+            num_minutes += 1
+        elif dp.minutes - prev_dp.minutes > 390:
+            # trading day break... so dont do anything
+            pass
+        elif dp.minutes - prev_dp.minutes:
+            num_minutes_missing += dp.minutes - prev_dp.minutes - 1
+        if num_minutes + num_minutes_missing > 100000:
+            break
+        prev_dp = dp
+    print("num minutes missing", num_minutes_missing)
+    print("num minutes", num_minutes)
+    percent = float(num_minutes_missing) / (float(num_minutes_missing)+float(num_minutes))
+    print("percent missing",float(num_minutes_missing) / (float(num_minutes_missing)+float(num_minutes)))
+    return percent*100.0
