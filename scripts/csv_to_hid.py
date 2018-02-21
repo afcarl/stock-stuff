@@ -12,8 +12,8 @@ def main(csvs):
     for f in csvs:
         if not f.endswith('csv'):
             continue
-        input_path = '../../1minutegood/' + f
-        output_path = '../../1minutehid/' + f.replace('csv','hid')
+        input_path = '../data/240minute/' + f
+        output_path = '../data/240minute/' + f.replace('csv','hid')
         start = time.time()
         with CSVFile(input_path, 'rt') as input_csv, HIDFile(output_path, 'wb') as output_hid:
             output_hid.write_datapoints(input_csv.read_datapoints(), output_hid.hid_type)
@@ -26,8 +26,8 @@ def split(a, n):
 
 import time
 if __name__ == '__main__':
-    csv_sets = split(sorted(os.listdir('../../1minutegood')),4)
-    pool = Pool(processes=4)
+    csv_sets = split(sorted(os.listdir('../data/240minute')),2)
+    pool = Pool(processes=2)
     print(pool.map(main, csv_sets))
 
 

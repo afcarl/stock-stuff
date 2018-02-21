@@ -12,9 +12,9 @@ from multiprocessing import Pool
 def main(hids, minutes):
     for f in hids:
         input_path = '../data/1minute/' + f
-        output_path = '../data/'+str(minutes) + 'minute/' + f.replace('hid.xz','csv')
+        output_path = '../data/'+str(minutes) + 'minute/' + f.replace('hid.gz','csv')
         start = time.time()
-        with CSVFile(input_path, 'rt+') as input_hid, CSVFile(output_path, 'wt+') as output_csv:
+        with HIDFile(input_path, 'rb+') as input_hid, CSVFile(output_path, 'wt+') as output_csv:
             output_csv.write_datapoints(gen_new_intraday(input_hid.read_datapoints(), minutes))
         end = time.time()
         print("took",(end-start),'seconds to convert',f)
@@ -29,4 +29,4 @@ if __name__ == '__main__':
     #pool = Pool(processes=4)
     #print(pool.map(main, csv_sets))
     hids = os.listdir('../data/1minute')
-    main(hids, 5)
+    main(hids, 240)
