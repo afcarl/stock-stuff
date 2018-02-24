@@ -1,5 +1,5 @@
-from Indicators import *
-from Utils.FileHandling.CSV.csv_file import CSVFile
+from src.Indicators import *
+from src.Utils.FileHandling.CSV.csv_file import CSVFile
 import matplotlib.pyplot as plt
 
 

@@ -2,7 +2,7 @@ import time
 import datetime
 import struct
 import numpy
-from Utils.FileHandling.HID import HIDType
+from src.Utils.FileHandling.HID import HIDType
 
 def date_timestamp_to_seconds(date, timestamp):
     return int((time.mktime(date.timetuple()) + timestamp.total_seconds()))

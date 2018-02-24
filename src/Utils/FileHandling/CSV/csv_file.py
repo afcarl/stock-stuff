@@ -1,5 +1,5 @@
 
-from DataPoint import DataPoint
+from src.DataPoint import DataPoint
 
 class CSVFile:
 

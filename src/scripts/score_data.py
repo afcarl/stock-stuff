@@ -3,9 +3,8 @@ currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentfram
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0,parentdir)
 
-from data_parser import count_missing
-from Utils.FileHandling.CSV.csv_file import CSVFile
-from Utils.FileHandling.HID.hid_file import HIDFile
+from src.data_parser import count_missing
+from src.Utils.FileHandling import HIDFile
 import operator
 
 stock_to_missing = dict()

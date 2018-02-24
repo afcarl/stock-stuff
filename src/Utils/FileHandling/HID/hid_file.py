@@ -1,8 +1,8 @@
 import struct
 
-from Utils import *
-from DataPoint import DataPoint
-from Utils.FileHandling.HID import HIDType
+from src.Utils import *
+from src.DataPoint import DataPoint
+from src.Utils.FileHandling import HIDType
 
 
 class HIDFile:

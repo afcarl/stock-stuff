@@ -3,11 +3,9 @@ currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentfram
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0,parentdir)
 
-import argparse
-from Utils.FileHandling import *
-from data_parser import gen_new_intraday
-from Utils.FileHandling.HID import *
-from multiprocessing import Pool
+from src.data_parser import gen_new_intraday
+from src.Utils.FileHandling import *
+
 
 def main(hids, minutes):
     for f in hids:

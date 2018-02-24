@@ -2,8 +2,8 @@ from alpha_vantage.timeseries import TimeSeries
 from alpha_vantage.techindicators import TechIndicators
 
 from pprint import pprint
-from s_p_companies import s_p_companies
-from Utils import *
+from src.s_p_companies import s_p_companies
+from src.Utils import *
 import threading
 import time
 

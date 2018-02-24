@@ -1,8 +1,6 @@
-import matplotlib.pyplot as plt
+from src.Indicators import *
+from src.Indicators.MovingAverage import MovingAverage
 
-from Indicators import *
-from Indicators.MovingAverage import MovingAverage
-from Utils.FileHandling.HID.hid_file import HIDFile
 
 class MACD(Indicator):
 

@@ -1,5 +1,4 @@
-from Utils.FileHandling.CSV.csv_file import CSVFile
-from DataPoint import DataPoint
+from src.DataPoint import DataPoint
 def find_data(data_points):
     minutes = data_points[0].minutes
     high = 0.0

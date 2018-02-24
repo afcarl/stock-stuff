@@ -1,6 +1,6 @@
 import os
-from Utils.FileHandling.CSV.csv_file import CSVFile
-from Utils.FileHandling.HID.hid_file import HIDFile
+from src.Utils.FileHandling.CSV.csv_file import CSVFile
+from src.Utils.FileHandling import HIDFile
 
 
 class DataFile:

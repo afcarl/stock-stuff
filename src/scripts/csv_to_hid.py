@@ -5,9 +5,8 @@ sys.path.insert(0,parentdir)
 
 from multiprocessing import Pool
 
-import argparse
-from Utils.FileHandling.CSV.csv_file import CSVFile
-from Utils.FileHandling.HID.hid_file import HIDFile
+from src.Utils.FileHandling.CSV.csv_file import CSVFile
+from src.Utils.FileHandling import HIDFile
 def main(csvs):
     for f in csvs:
         if not f.endswith('csv'):

@@ -1,6 +1,3 @@
-
-from Utils.FileHandling.HID.hid_file import HIDFile
-
 def within_error_margin(close, low, high, error_margin=.01):
     percent_diff_low = abs((low - close) / close)
     percent_diff_high = abs((high - close) / close)
