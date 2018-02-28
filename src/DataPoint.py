@@ -76,7 +76,7 @@ class DataPoint:
         return self.__str__()
 
     @staticmethod
-    def default_data_point(self):
+    def default_data_point():
         return DataPoint(datetime.datetime.strptime('19690101', '%Y%m%d').date(),
                          datetime.timedelta(seconds=0),
                          1.0,

@@ -1,8 +1,17 @@
 from src.DataProvisioner import StockDataProvisioner, Timespan
-from src.Analysis.LocalMinMax import find_local_minima
+from src.Analysis.LocalMinMax import find_local_minima, find_local_maxima
 
-#def test_extrema():
-with StockDataProvisioner('QCOM', Timespan.HOURS_4) as sdp:
-    dps = sdp.read_datapoints()
-    print(dps)
-    print(find_local_minima(dps,5))
+def test_extrema():
+    with StockDataProvisioner('QCOM', Timespan.HOURS_4) as sdp:
+        dps = list(sdp.read_datapoints())
+        minima = find_local_minima(dps,100)
+        print(minima)
+        for minimum in minima[0]:
+            print(minimum)
+            print(dps[minimum])
+
+        maxima = find_local_maxima(dps, 100)
+        print(maxima)
+        for maximum in maxima[0]:
+            print(maximum)
+            print(dps[maximum])

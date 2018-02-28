@@ -2,7 +2,7 @@ import struct
 
 from src.Utils import *
 from src.DataPoint import DataPoint
-from src.Utils.FileHandling import HIDType
+from src.Utils.FileHandling.HID import HIDType
 
 
 class HIDFile:

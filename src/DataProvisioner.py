@@ -3,8 +3,7 @@ from enum import Enum
 import os
 from src.Utils.FileHandling import DataFile
 
-
-ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
+from src import ROOT_DIR
 
 class Timespan(Enum):
     MINUTES_1  = 1

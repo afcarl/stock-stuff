@@ -26,13 +26,7 @@ class RSI(Indicator):
             RS = avg_gain / avg_loss
             yield dp.minutes, 100.0 - (100.0 / (1.0 + RS))
 
-with CSVFile('../data/daily/table_qcom.csv', 'rt') as f:
-    data_points = list(f.read_datapoints())[-1000:]
-    ma = RSI(data_points, 14)
-    x_axis = []
-    y_axis = []
-    for minutes, point in ma.calculate():
-        x_axis.append(minutes)
-        y_axis.append(point)
-    plt.plot(x_axis[-10:], y_axis[-10:])
-    plt.show()
+    def score(self, rsi):
+        # rsi is scaled from 0 - 100 on buy -> sell
+        #so subtract 50, then multiple by -2 to scale and reverse to sell -> buy -100 -> +100
+        return (rsi - 50.0) * -2.0
