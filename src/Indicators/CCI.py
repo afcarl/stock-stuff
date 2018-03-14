@@ -11,7 +11,7 @@ class CCI(Indicator):
 
     def calculate(self):
         for i, dp in enumerate(self.data_points):
-            yield dp.minutes, self.calculate_point(i+1)
+            yield dp.minutes, self.calculate_point(i)
 
     def calculate_point(self, index):
         dp = self.data_points[index]

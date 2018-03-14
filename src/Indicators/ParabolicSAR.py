@@ -1,7 +1,7 @@
 from src.Indicators import *
 from src.DataPoint import DataPoint
 
-class Stochastic(Indicator):
+class PrabolicSAR(Indicator):
 
     def __init__(self, data_points, period):
         assert isinstance(data_points, list), "moving average must take a list, not an iterator"

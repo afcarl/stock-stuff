@@ -7,11 +7,9 @@ def test_extrema():
         minima = find_local_minima(dps,100)
         print(minima)
         for minimum in minima[0]:
-            print(minimum)
-            print(dps[minimum])
+            pass
 
         maxima = find_local_maxima(dps, 100)
         print(maxima)
         for maximum in maxima[0]:
-            print(maximum)
-            print(dps[maximum])
+            pass

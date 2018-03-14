@@ -11,13 +11,12 @@ class MovingAverage(Indicator):
 
     def calculate(self):
         for i, dp in enumerate(self.data_points):
-            yield dp.minutes, self.calculate_point(i+1)
+            yield dp.minutes, self.calculate_point(i)
 
     def calculate_point(self, index):
         # max size will be none if data_points come straight from historical stock data
         if self.max_size is None:
-            low = index-self.period if index - self.period > 0 else 0
-            points = self.data_points[low: index]
+            points = self.data_points[-self.period:]
         else:
             #max size will be set if this MA is of an indicator, like the signal line for MACD
             points = self.data_points

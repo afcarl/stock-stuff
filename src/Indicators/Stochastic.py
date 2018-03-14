@@ -10,11 +10,10 @@ class Stochastic(Indicator):
 
     def calculate(self):
         for i, dp in enumerate(self.data_points):
-            yield dp.minutes, self.calculate_point(i+1)
+            yield dp.minutes, self.calculate_point(i)
 
     def calculate_point(self, index):
-        low = index-self.period if index - self.period > 0 else 0
-        points = self.data_points[low: index]
+        points = self.data_points[-self.period:]
         close = self.data_points[index].close
         closes = [p.close for p in points]
         lowest = min(closes)

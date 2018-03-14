@@ -1,9 +1,7 @@
-import numpy
-
 from src.Indicators import *
 
 
-class BollingerBand(Indicator):
+class WilliamsR(Indicator):
 
     def __init__(self, data_points, period):
         assert isinstance(data_points, list), "moving average must take a list, not an iterator"
@@ -15,13 +13,9 @@ class BollingerBand(Indicator):
             yield dp.minutes, self.calculate_point(i)
 
     def calculate_point(self, index):
-        points = self.data_points[- self.period:]
-        period = len(points)
-        closes = [p.close for p in points]
-        average = sum(closes) / float(period)
-        std_deviation = numpy.std([x.close for x in points])
+        dp = self.data_points[index]
+        highest = max([dp.close for dp in self.data_points[-self.period:]])
+        lowest = min([dp.close for dp in self.data_points[-self.period:]])
 
-        high = average + std_deviation * 2
-        low = average - (std_deviation * 2)
-        return low, average, high
-
+        r = (highest - dp.close) / (highest - lowest) * -100.0
+        return r

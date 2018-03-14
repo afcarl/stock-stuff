@@ -1,6 +1,6 @@
 requires python >= 3.3 (might require more than that though)
 
-alpha_vantage pandas twilio cbor2 numpy pytest
+alpha_vantage pandas twilio cbor2 numpy pytest pyEX
 
 .hid file format - historical intraday
 
@@ -56,3 +56,36 @@ bytes 4-7  - version - 32 bit unsigned integer little endian. currently only val
 bytes 8-15 - length  - 64 bit signed integer little endian representing the number or datapoints in this file
 byte 16-19  - data_type - 32 bit unsigned integer little endian. 0 for fixed point. 1 for 32 bit float. 2 for 64 bit float
 bytes 20-63 - reserved
+
+
+HID format sucks! lets use UMCSV now
+Ultra Mini Comma Separated Values
+
+basically, it's a csv, but only supports numbers, comma, forward slash, and delimiter, so we can encode what we need in
+a nibble rather than a byte, cutting down size by 2x!
+
+UMCSV starts with one single human readable ascii text line, ended with a \n, then gets into the compressed encoding
+the ascii line is just the normal csv header for column names
+
+supported characters | nibble encoding:
+
++    0
+,    1
+-    2
+.    3
+/    4
+0    5
+1    6
+2    7
+3    8
+4    9
+5    0xa
+6    0xb
+7    0xc
+8    0xd
+9    0xe
+     0xf reserved
+
+for our cases, we really should only need 0-9 , and .
+
+bytes are read left to right, the high nibble being more left than the low nibble (so 0xef would decode as '89'

@@ -18,7 +18,7 @@ class MACD(Indicator):
 
     def calculate(self):
         for i, dp in enumerate(self.data_points):
-            yield dp.minutes, self.calculate_point(i+1)
+            yield dp.minutes, self.calculate_point(i)
 
     def calculate_point(self, index):
         m1 = self.ma1.calculate_point(index)
@@ -27,9 +27,6 @@ class MACD(Indicator):
         macd = m1 - m2
         self.signal.enqueue(macd)
         sig = self.signal.calculate_point(index)
-        print('ma1',m1)
-        print('ma2',m2)
-        print('sig',sig)
         return m1 - m2, sig
 
 
